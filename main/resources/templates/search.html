@@ -1,0 +1,139 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="../static/css/newsfeed.css" th:href="@{/css/newsfeed.css}">
+    <link rel="stylesheet" type="text/css" href="../static/css/navbar.css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Search</title>
+</head>
+
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand"  th:href="@{/}">News API</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active"><a class="nav-link" th:href="@{/headlines}">Headlines </a>
+            </li>
+            <li class="nav-item active"><a class="nav-link" th:href="@{/searchPage}">Search</a>
+
+            </li>
+            <li class="nav-item active"><a class="nav-link" th:href="@{/search/history}">Search History</a>
+
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light ">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <h3>Search By</h3>
+                    <form th:action="@{/search}" method="get">
+                        <div class="form-group sidebar">
+                            <label for="searchByText">Query</label>
+                            <input type="text" class="form-control" id="searchByText" name="q">
+                        </div>
+                        <!--            <div class="form-group sidebar">-->
+                        <!--              <label for="searchByCategory">Category</label>-->
+                        <!--              <select class="form-control" aria-label="searchBy" id="searchByCategory" name="category">-->
+                        <!--                <option value="" selected></option>-->
+                        <!--                <option th:each="option : ${categoriesOptions}" th:value="${option}"-->
+                        <!--                        th:text="${option}"></option>-->
+                        <!--              </select>-->
+                        <!--            </div>-->
+                        <div class="form-group sidebar">
+                            <label for="searchBySource">Sources</label>
+                            <input type="text" class="form-control" id="searchBySource" name="sources">
+                        </div>
+                        <div class="form-group sidebar">
+                            <label for="searchByLanguage">Language</label>
+                            <input type="text" class="form-control" id="searchByLanguage" name="language">
+                        </div>
+                        <div class="form-group sidebar">
+                            <label>Time Of Publication</label>
+                            <label for="from">From</label>
+                            <input type="datetime-local" class="form-control" id="from" name="from">
+                            <label for="to">To</label>
+                            <input type="datetime-local" class="form-control" id="to" name="to">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </form>
+                </ul>
+                <br/>
+
+            </div>
+        </nav>
+        <br/>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <h2 class="text-center" th:text="${heading}">Heading</h2>
+            <br/>
+            <div th:if="${warning != null}" class="alert alert-error alert-dismissible fade show" role="alert">
+                <span th:text='${message}'>Error Massage!</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div th:if="${error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span th:text='${message}'>Error Massage!</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="text-center" th:if="${articles}==null">No news</div>
+            <div class="container-fluid margin">
+                <div class="row">
+                    <div class="col-md-3" th:each=" article : ${articles}">
+                        <div class="card text-Black ">
+
+                            <img th:src="${  (article.urlToImage == '#' && !#strings.isEmpty(article.urlToImage)) ?
+                            'https://picsum.photos/id/1/200/300' : article.urlToImage }" alt="No image found"/>
+
+                            <div class="card-body">
+                                <h5 class="card-title" th:text="${article.title}">Title of
+                                    the news</h5>
+                                <p>
+                                    <a class="btn btn-primary" data-toggle="collapse"
+                                       th:href="'#collapseExample'+${articleStat.index}" role="button"
+                                       aria-expanded="false" aria-controls="collapseExample">Click for Details</a>
+                                </p>
+                                <div class="collapse" id="collapseExample"
+                                     th:id="'collapseExample'+${articleStat.index}">
+                                    <div class="card card-body" th:text="${article.content}">Content
+                                        of article.
+                                    </div>
+                                </div>
+                                <p class="card-text">
+                                    <small>Source: <span th:text="${article.source.name}">not
+												Available</span>
+                                    </small><br/>
+                                    <small> Published at: <span th:text="${article.publishedDate}">Date not
+												found</span>
+                                    </small>
+                                    <a class="card-link" href="https://www.google.com" th:href="${article.url}">Read
+                                        more</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+</body>
+
+</html>

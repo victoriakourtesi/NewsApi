@@ -1,0 +1,66 @@
+.font
+{
+    font-family: 'Libre Caslon Text', serif;
+	font-size: 35px;
+
+}
+.text_col
+{
+	color:#cc0000;
+}
+.nav_col
+{
+	background-color: #3399ff;
+	height: 50px;
+}
+
+.nav_border /*border under the navbar*/
+{
+	border-bottom: 2px solid black;
+	border-top: 1px solid black;
+}
+.font1
+{
+	font-size: 23px;
+}
+.font2
+{
+	font-family: 'Acme', sans-serif;
+}
+.font3
+{
+	color:  #e60000;
+}
+
+.bar
+{
+	margin-top:10px; 
+	height: 35px;
+	background-color: #ccccff;
+}
+
+.colm
+{
+	background-color:  #ffff99;
+	height: 35px;
+}
+
+.margin
+{
+	margin-top: 30px;
+}
+
+.bg_color
+{
+	background-color:  #3399ff;
+}
+
+.border
+{
+	border-bottom: 3px solid black;
+}
+
+img {
+	width: 200px;
+	height: 200px;
+}
